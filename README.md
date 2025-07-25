@@ -1,1 +1,0 @@
-# nola-dive-bar-scavenger-hunt
