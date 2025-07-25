@@ -19,23 +19,6 @@
             min-height: 100vh;
         }
         
-        /* Skip to main content link for screen readers */
-        .skip-link {
-            position: absolute;
-            top: -40px;
-            left: 6px;
-            background: #000;
-            color: #fff;
-            padding: 8px;
-            z-index: 1000;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        
-        .skip-link:focus {
-            top: 6px;
-        }
-        
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -108,7 +91,6 @@
         .category-icon {
             font-size: 2em;
             margin-right: 15px;
-            /* Add aria-hidden since these are decorative */
         }
         
         .category-title {
@@ -121,41 +103,25 @@
             list-style: none;
         }
         
-        /* Convert challenge items to proper buttons for accessibility */
-        .challenge-button {
-            width: 100%;
+        .challenge-item {
             background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
-            border: none;
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 10px;
             border-left: 4px solid #d4af37;
             cursor: pointer;
             transition: all 0.3s ease;
-            text-align: left;
-            color: #f4f4f4;
-            font-family: inherit;
-            font-size: inherit;
             position: relative;
         }
         
-        .challenge-button:hover,
-        .challenge-button:focus {
+        .challenge-item:hover {
             background: linear-gradient(145deg, #2d2d2d, #3a3a3a);
             transform: translateX(5px);
-            outline: 2px solid #d4af37;
-            outline-offset: 2px;
         }
         
-        .challenge-button.completed {
+        .challenge-item.completed {
             background: linear-gradient(145deg, #0d4a0d, #1a5c1a);
             border-left-color: #28a745;
-        }
-        
-        .challenge-button.completed::before {
-            content: "✓ Completed: ";
-            color: #28a745;
-            font-weight: bold;
         }
         
         .challenge-text {
@@ -173,20 +139,14 @@
             font-size: 0.9em;
             color: #ccc;
             font-style: italic;
-            clear: both;
         }
         
-        /* Visually hidden class for screen reader only content */
-        .sr-only {
+        .completion-checkbox {
             position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+            right: 15px;
+            top: 15px;
+            width: 20px;
+            height: 20px;
         }
         
         .leaderboard {
@@ -236,10 +196,6 @@
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
         }
         
-        .badge.earned::before {
-            content: "Earned: ";
-        }
-        
         .social-share {
             background: rgba(0, 0, 0, 0.8);
             border-radius: 15px;
@@ -260,41 +216,9 @@
             transition: all 0.3s ease;
         }
         
-        .share-button:hover,
-        .share-button:focus {
+        .share-button:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(29, 161, 242, 0.4);
-            outline: 2px solid #fff;
-            outline-offset: 2px;
-        }
-        
-        /* High contrast mode support */
-        @media (prefers-contrast: high) {
-            .challenge-button {
-                border: 2px solid #fff;
-            }
-            
-            .badge {
-                border: 2px solid #fff;
-            }
-        }
-        
-        /* Reduced motion support */
-        @media (prefers-reduced-motion: reduce) {
-            .challenge-button,
-            .share-button {
-                transition: none;
-            }
-            
-            .challenge-button:hover,
-            .challenge-button:focus {
-                transform: none;
-            }
-            
-            .share-button:hover,
-            .share-button:focus {
-                transform: none;
-            }
         }
         
         @media (max-width: 768px) {
@@ -313,138 +237,218 @@
     </style>
 </head>
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    
     <div class="container">
-        <header class="header">
+        <div class="header">
             <h1>🏆 NOLA Dive Bar Scavenger Hunt</h1>
             <p>Track your progress through New Orleans' authentic dive bar culture</p>
-        </header>
+        </div>
 
-        <main id="main-content">
-            <section class="score-tracker" role="banner" aria-label="Current Score and Level">
-                <div class="score-display" id="totalScore" aria-live="polite">0 Points</div>
-                <div id="currentLevel" class="achievement-level rookie" aria-live="polite">Rookie Explorer</div>
-                <p>Complete challenges to earn points and unlock achievements!</p>
-            </section>
+        <div class="score-tracker">
+            <div class="score-display" id="totalScore">0 Points</div>
+            <div id="currentLevel" class="achievement-level rookie">Rookie Explorer</div>
+            <p>Complete challenges to earn points and unlock achievements!</p>
+        </div>
 
-            <section class="challenge-categories" aria-label="Challenge Categories">
-                <!-- Tier 1 Challenges -->
-                <div class="category-card">
-                    <div class="category-header">
-                        <span class="category-icon" aria-hidden="true">👑</span>
-                        <h2 class="category-title">Wedding Party Favorites</h2>
-                    </div>
-                    <ul class="challenge-list" role="list">
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 25)" 
-                                    aria-describedby="lafitte-desc" data-challenge="Order the Mystery Drink at Lafitte's">
-                                <div class="challenge-text">Order the Mystery Drink at Lafitte's</div>
-                                <div class="challenge-points">25 pts</div>
-                                <div class="challenge-description" id="lafitte-desc">Experience the glowing signature cocktail in candlelight</div>
-                                <span class="sr-only">Challenge worth 25 points</span>
-                            </button>
-                        </li>
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 20)" 
-                                    aria-describedby="igor-desc" data-challenge="Photo on Igor's Famous Checkered Floor">
-                                <div class="challenge-text">Photo on Igor's Famous Checkered Floor</div>
-                                <div class="challenge-points">20 pts</div>
-                                <div class="challenge-description" id="igor-desc">Get the Instagram shot everyone wants</div>
-                                <span class="sr-only">Challenge worth 20 points</span>
-                            </button>
-                        </li>
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 30)" 
-                                    aria-describedby="port-desc" data-challenge="Finish a Port of Call Burger">
-                                <div class="challenge-text">Finish a Port of Call Burger</div>
-                                <div class="challenge-points">30 pts</div>
-                                <div class="challenge-description" id="port-desc">Warning: These are legendary for their size</div>
-                                <span class="sr-only">Challenge worth 30 points</span>
-                            </button>
-                        </li>
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 25)" 
-                                    aria-describedby="kingpin-desc" data-challenge="Bowl a Strike at Kingpin">
-                                <div class="challenge-text">Bowl a Strike at Kingpin</div>
-                                <div class="challenge-points">25 pts</div>
-                                <div class="challenge-description" id="kingpin-desc">Cocktails and strikes - perfect combination</div>
-                                <span class="sr-only">Challenge worth 25 points</span>
-                            </button>
-                        </li>
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 20)" 
-                                    aria-describedby="parasol-desc" data-challenge="Try Parasol's Famous Po-Boy">
-                                <div class="challenge-text">Try Parasol's Famous Po-Boy</div>
-                                <div class="challenge-points">20 pts</div>
-                                <div class="challenge-description" id="parasol-desc">Local legend for authentic New Orleans flavor</div>
-                                <span class="sr-only">Challenge worth 20 points</span>
-                            </button>
-                        </li>
-                    </ul>
+        <div class="challenge-categories">
+            <!-- Tier 1 Challenges -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">👑</span>
+                    <h3 class="category-title">Wedding Party Favorites</h3>
                 </div>
+                <ul class="challenge-list">
+                    <li class="challenge-item" onclick="toggleChallenge(this, 25)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Order the Mystery Drink at Lafitte's</div>
+                        <div class="challenge-points">25 pts</div>
+                        <div class="challenge-description">Experience the glowing signature cocktail in candlelight</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 20)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Photo on Igor's Famous Checkered Floor</div>
+                        <div class="challenge-points">20 pts</div>
+                        <div class="challenge-description">Get the Instagram shot everyone wants</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 30)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Finish a Port of Call Burger</div>
+                        <div class="challenge-points">30 pts</div>
+                        <div class="challenge-description">Warning: These are legendary for their size</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 25)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Bowl a Strike at Kingpin</div>
+                        <div class="challenge-points">25 pts</div>
+                        <div class="challenge-description">Cocktails and strikes - perfect combination</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 20)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Try Parasol's Famous Po-Boy</div>
+                        <div class="challenge-points">20 pts</div>
+                        <div class="challenge-description">Local legend for authentic New Orleans flavor</div>
+                    </li>
+                </ul>
+            </div>
 
-                <!-- Continue with other categories using the same pattern... -->
-                <!-- I'll include one more category to show the pattern -->
-                
-                <div class="category-card">
-                    <div class="category-header">
-                        <span class="category-icon" aria-hidden="true">❤️</span>
-                        <h2 class="category-title">Neighborhood Hearts</h2>
-                    </div>
-                    <ul class="challenge-list" role="list">
-                        <li role="listitem">
-                            <button class="challenge-button" onclick="toggleChallenge(this, 35)" 
-                                    aria-describedby="snake-desc" data-challenge="Fit Your Whole Group in Snake & Jake's">
-                                <div class="challenge-text">Fit Your Whole Group in Snake & Jake's</div>
-                                <div class="challenge-points">35 pts</div>
-                                <div class="challenge-description" id="snake-desc">The tiniest bar challenge - good luck!</div>
-                                <span class="sr-only">Challenge worth 35 points</span>
-                            </button>
-                        </li>
-                        <!-- Add remaining challenges following same pattern -->
-                    </ul>
+            <!-- Tier 2 Challenges -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">❤️</span>
+                    <h3 class="category-title">Neighborhood Hearts</h3>
                 </div>
-            </section>
+                <ul class="challenge-list">
+                    <li class="challenge-item" onclick="toggleChallenge(this, 35)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Fit Your Whole Group in Snake & Jake's</div>
+                        <div class="challenge-points">35 pts</div>
+                        <div class="challenge-description">The tiniest bar challenge - good luck!</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 30)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Catch Live Music at R Bar</div>
+                        <div class="challenge-points">30 pts</div>
+                        <div class="challenge-description">Thursday nights feature the Treme Brass Band</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 25)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Sunday Red Beans & Rice at Markey's</div>
+                        <div class="challenge-points">25 pts</div>
+                        <div class="challenge-description">Free traditional meal with community</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 20)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Share a Table at The Joint</div>
+                        <div class="challenge-points">20 pts</div>
+                        <div class="challenge-description">Communal seating encourages new friendships</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 25)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Learn Pal's Katrina Story</div>
+                        <div class="challenge-points">25 pts</div>
+                        <div class="challenge-description">Ask locals about the bar's resilience tale</div>
+                    </li>
+                </ul>
+            </div>
 
-            <section class="achievement-badges" aria-label="Achievement Badges">
-                <h2 style="color: #d4af37; margin-bottom: 20px;">🏅 Achievement Badges</h2>
-                <div class="badge rookie" id="badge-rookie" role="img" aria-label="Rookie Explorer badge - earned">
-                    <span aria-hidden="true">🥉</span> Rookie Explorer
+            <!-- Tier 3 Challenges -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">🎯</span>
+                    <h3 class="category-title">Deep Dive Discoveries</h3>
                 </div>
-                <div class="badge honorary" id="badge-honorary" role="img" aria-label="Honorary Local badge - not yet earned">
-                    <span aria-hidden="true">🥈</span> Honorary Local
-                </div>
-                <div class="badge legend" id="badge-legend" role="img" aria-label="Dive Bar Legend badge - not yet earned">
-                    <span aria-hidden="true">🥇</span> Dive Bar Legend
-                </div>
-                <!-- Continue with other badges -->
-            </section>
+                <ul class="challenge-list">
+                    <li class="challenge-item" onclick="toggleChallenge(this, 50)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Earn Respect at Bud Rip's</div>
+                        <div class="challenge-points">50 pts</div>
+                        <div class="challenge-description">Advanced only - show genuine cultural sensitivity</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 40)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Survive 24 Hours at Johnny White's</div>
+                        <div class="challenge-points">40 pts</div>
+                        <div class="challenge-description">The bar that never closes - ultimate endurance</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 35)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Embrace the Goth at The Dungeon</div>
+                        <div class="challenge-points">35 pts</div>
+                        <div class="challenge-description">Underground alternative culture experience</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 30)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Catch a Show at The Saint</div>
+                        <div class="challenge-points">30 pts</div>
+                        <div class="challenge-description">Punk rock venue with authentic edge</div>
+                    </li>
+                </ul>
+            </div>
 
-            <section class="leaderboard" aria-label="Wedding Party Leaderboard">
-                <h2>🏆 Wedding Party Leaderboard</h2>
-                <div id="leaderboard-list" role="list">
-                    <div class="leaderboard-entry" role="listitem">
-                        <span>🥇 Sarah's Squad</span>
-                        <span style="color: #d4af37;" aria-label="487 points">487 points</span>
-                    </div>
-                    <!-- Continue with other entries -->
+            <!-- Social & Cultural Challenges -->
+            <div class="category-card">
+                <div class="category-header">
+                    <span class="category-icon">🎭</span>
+                    <h3 class="category-title">Cultural Immersion</h3>
                 </div>
-            </section>
+                <ul class="challenge-list">
+                    <li class="challenge-item" onclick="toggleChallenge(this, 25)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Learn Local Slang from a Regular</div>
+                        <div class="challenge-points">25 pts</div>
+                        <div class="challenge-description">Pick up authentic New Orleans expressions</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 30)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Share a Story with a Bartender</div>
+                        <div class="challenge-points">30 pts</div>
+                        <div class="challenge-description">Connect with the heart of dive bar culture</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 20)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Toast with Strangers</div>
+                        <div class="challenge-points">20 pts</div>
+                        <div class="challenge-description">Experience the welcoming spirit of NOLA</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 35)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Visit 3 Different Neighborhoods</div>
+                        <div class="challenge-points">35 pts</div>
+                        <div class="challenge-description">Experience the diversity of New Orleans</div>
+                    </li>
+                    <li class="challenge-item" onclick="toggleChallenge(this, 40)">
+                        <input type="checkbox" class="completion-checkbox">
+                        <div class="challenge-text">Buy a Round for Locals</div>
+                        <div class="challenge-points">40 pts</div>
+                        <div class="challenge-description">Ultimate dive bar generosity gesture</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
-            <section class="social-share" aria-label="Share Your Progress">
-                <h2 style="color: #d4af37; margin-bottom: 20px;">📱 Share Your Adventure</h2>
-                <button class="share-button" onclick="shareProgress()" aria-label="Share progress on Instagram">
-                    Share on Instagram
-                </button>
-                <button class="share-button" onclick="shareToFacebook()" aria-label="Share progress on Facebook">
-                    Share on Facebook
-                </button>
-                <button class="share-button" onclick="shareToTwitter()" aria-label="Share progress on Twitter">
-                    Tweet Progress
-                </button>
-            </section>
-        </main>
+        <div class="achievement-badges">
+            <h3 style="color: #d4af37; margin-bottom: 20px;">🏅 Achievement Badges</h3>
+            <div class="badge rookie" id="badge-rookie">🥉 Rookie Explorer</div>
+            <div class="badge honorary" id="badge-honorary">🥈 Honorary Local</div>
+            <div class="badge legend" id="badge-legend">🥇 Dive Bar Legend</div>
+            <div class="badge" id="badge-social">🤝 Social Butterfly</div>
+            <div class="badge" id="badge-foodie">🍴 Dive Bar Foodie</div>
+            <div class="badge" id="badge-night-owl">🦉 Night Owl</div>
+            <div class="badge" id="badge-explorer">🗺️ Neighborhood Explorer</div>
+            <div class="badge" id="badge-legend-status">👑 Living Legend</div>
+        </div>
+
+        <div class="leaderboard">
+            <h3>🏆 Wedding Party Leaderboard</h3>
+            <div id="leaderboard-list">
+                <div class="leaderboard-entry">
+                    <span>🥇 Sarah's Squad</span>
+                    <span style="color: #d4af37;">487 points</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>🥈 Mike's Mayhem</span>
+                    <span style="color: #c0c0c0;">423 points</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>🥉 Jessica's Journey</span>
+                    <span style="color: #cd7f32;">398 points</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>4️⃣ David's Dive Squad</span>
+                    <span style="color: #ccc;">312 points</span>
+                </div>
+                <div class="leaderboard-entry">
+                    <span>5️⃣ Rachel's Rebels</span>
+                    <span style="color: #ccc;">278 points</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="social-share">
+            <h3 style="color: #d4af37; margin-bottom: 20px;">📱 Share Your Adventure</h3>
+            <button class="share-button" onclick="shareProgress()">Share on Instagram</button>
+            <button class="share-button" onclick="shareToFacebook()">Share on Facebook</button>
+            <button class="share-button" onclick="shareToTwitter()">Tweet Progress</button>
+        </div>
     </div>
 
     <script>
@@ -452,80 +456,114 @@
         let completedChallenges = new Set();
 
         function toggleChallenge(element, points) {
-            const challengeName = element.getAttribute('data-challenge');
+            const checkbox = element.querySelector('.completion-checkbox');
+            const challengeText = element.querySelector('.challenge-text').textContent;
             
             if (element.classList.contains('completed')) {
                 // Uncomplete challenge
                 element.classList.remove('completed');
-                element.setAttribute('aria-pressed', 'false');
+                checkbox.checked = false;
                 totalScore -= points;
-                completedChallenges.delete(challengeName);
-                
-                // Announce to screen readers
-                announceToScreenReader(`Uncompleted: ${challengeName}. Lost ${points} points.`);
+                completedChallenges.delete(challengeText);
             } else {
                 // Complete challenge
                 element.classList.add('completed');
-                element.setAttribute('aria-pressed', 'true');
+                checkbox.checked = true;
                 totalScore += points;
-                completedChallenges.add(challengeName);
-                
-                // Announce to screen readers
-                announceToScreenReader(`Completed: ${challengeName}. Earned ${points} points!`);
+                completedChallenges.add(challengeText);
             }
             
             updateScore();
             updateAchievements();
         }
 
-        function announceToScreenReader(message) {
-            const announcement = document.createElement('div');
-            announcement.setAttribute('aria-live', 'assertive');
-            announcement.setAttribute('aria-atomic', 'true');
-            announcement.className = 'sr-only';
-            announcement.textContent = message;
-            
-            document.body.appendChild(announcement);
-            
-            // Remove after announcement
-            setTimeout(() => {
-                document.body.removeChild(announcement);
-            }, 1000);
-        }
-
         function updateScore() {
-            const scoreElement = document.getElementById('totalScore');
-            scoreElement.textContent = totalScore + ' Points';
+            document.getElementById('totalScore').textContent = totalScore + ' Points';
             
             const levelElement = document.getElementById('currentLevel');
-            let newLevel;
             if (totalScore >= 500) {
-                newLevel = 'Dive Bar Legend';
+                levelElement.textContent = 'Dive Bar Legend';
                 levelElement.className = 'achievement-level legend';
             } else if (totalScore >= 250) {
-                newLevel = 'Honorary Local';
+                levelElement.textContent = 'Honorary Local';
                 levelElement.className = 'achievement-level honorary';
             } else {
-                newLevel = 'Rookie Explorer';
+                levelElement.textContent = 'Rookie Explorer';
                 levelElement.className = 'achievement-level rookie';
             }
-            levelElement.textContent = newLevel;
         }
 
         function updateAchievements() {
-            // Badge logic remains the same but with improved accessibility
-            // Add aria-label updates when badges are earned
-            
+            // Rookie Explorer
             if (totalScore >= 125) {
-                const badge = document.getElementById('badge-rookie');
-                badge.classList.add('earned');
-                badge.setAttribute('aria-label', 'Rookie Explorer badge - earned');
+                document.getElementById('badge-rookie').classList.add('earned');
             }
             
-            // Continue with other badge logic...
+            // Honorary Local
+            if (totalScore >= 250) {
+                document.getElementById('badge-honorary').classList.add('earned');
+            }
+            
+            // Dive Bar Legend
+            if (totalScore >= 500) {
+                document.getElementById('badge-legend').classList.add('earned');
+            }
+            
+            // Social Butterfly - Complete 3 social challenges
+            const socialChallenges = [
+                'Learn Local Slang from a Regular',
+                'Share a Story with a Bartender',
+                'Toast with Strangers',
+                'Buy a Round for Locals'
+            ];
+            let socialCount = 0;
+            socialChallenges.forEach(challenge => {
+                if (completedChallenges.has(challenge)) socialCount++;
+            });
+            if (socialCount >= 3) {
+                document.getElementById('badge-social').classList.add('earned');
+            }
+            
+            // Dive Bar Foodie - Complete food challenges
+            const foodChallenges = [
+                'Finish a Port of Call Burger',
+                'Try Parasol\'s Famous Po-Boy',
+                'Sunday Red Beans & Rice at Markey\'s'
+            ];
+            let foodCount = 0;
+            foodChallenges.forEach(challenge => {
+                if (completedChallenges.has(challenge)) foodCount++;
+            });
+            if (foodCount >= 2) {
+                document.getElementById('badge-foodie').classList.add('earned');
+            }
+            
+            // Night Owl - Complete late night challenges
+            if (completedChallenges.has('Survive 24 Hours at Johnny White\'s')) {
+                document.getElementById('badge-night-owl').classList.add('earned');
+            }
+            
+            // Neighborhood Explorer
+            if (completedChallenges.has('Visit 3 Different Neighborhoods')) {
+                document.getElementById('badge-explorer').classList.add('earned');
+            }
+            
+            // Living Legend - Complete all Tier 3 challenges
+            const tier3Challenges = [
+                'Earn Respect at Bud Rip\'s',
+                'Survive 24 Hours at Johnny White\'s',
+                'Embrace the Goth at The Dungeon',
+                'Catch a Show at The Saint'
+            ];
+            let tier3Count = 0;
+            tier3Challenges.forEach(challenge => {
+                if (completedChallenges.has(challenge)) tier3Count++;
+            });
+            if (tier3Count === tier3Challenges.length) {
+                document.getElementById('badge-legend-status').classList.add('earned');
+            }
         }
 
-        // Rest of the JavaScript functions remain the same but with better accessibility
         function shareProgress() {
             const level = document.getElementById('currentLevel').textContent;
             const text = `Just earned ${totalScore} points as a ${level} in the NOLA Dive Bar Scavenger Hunt! 🍺🏆 #CrimsonQuarterNOLA #NOLADiveBars #WeddingBarCrawl`;
@@ -537,10 +575,12 @@
                     url: window.location.href
                 });
             } else {
+                // Fallback for Instagram sharing
                 const instagramUrl = `https://www.instagram.com/`;
                 window.open(instagramUrl, '_blank');
+                // Copy text to clipboard
                 navigator.clipboard.writeText(text);
-                announceToScreenReader('Caption copied to clipboard! Paste it in your Instagram post.');
+                alert('Caption copied to clipboard! Paste it in your Instagram post.');
             }
         }
 
@@ -556,18 +596,8 @@
             window.open(url, '_blank');
         }
 
-        // Initialize
+        // Initialize badges
         document.getElementById('badge-rookie').classList.add('earned');
-        
-        // Add keyboard navigation
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter' || e.key === ' ') {
-                if (e.target.classList.contains('challenge-button')) {
-                    e.preventDefault();
-                    e.target.click();
-                }
-            }
-        });
     </script>
 </body>
 </html>
