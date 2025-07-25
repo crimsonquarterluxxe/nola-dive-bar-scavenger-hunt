@@ -1,1 +1,7 @@
 # nola-dive-bar-scavenger-hunt
+# For GitHub Pages:
+git add .
+git commit -m "deploy: launch scavenger hunt v1.0"
+git push origin main
+
+# Enable Pages in repository settings
